@@ -1,9 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Authors>Alessandro Cagliostro Gonçalves Neves</Authors>
+    <Copyright>$(Authors), 2022</Copyright>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/alecgn/crypto-utils</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/alecgn/crypto-utils</RepositoryUrl>
+    <Title>$(AssemblyName)</Title>
+    <Description>Cryptographic utilities.</Description>
+    <PackageTags>encryption decryption cryptography aes aes128 aes192 aes256 aes128gcm aes192gcm aes256gcm aesgcm128 aesgcm192 aesgcm256 gcm c# c-sharp security password authentication authenticated base64 hex hexadecimal encode decode</PackageTags>
+    <Version>1.0.1</Version>
+	<FileVersion>1.0.1</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>

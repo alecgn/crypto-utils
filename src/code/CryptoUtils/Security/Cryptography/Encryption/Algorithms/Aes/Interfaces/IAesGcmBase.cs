@@ -1,14 +1,7 @@
-﻿using CryptoUtils.Text.Encoding;
-
-namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes.Interfaces
+﻿namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 {
     public interface IAesGcmBase : IEncryptionOperations
     {
-        int TagSize { get; }
-        int NonceSize { get; }
-        int EncryptedDataMinimumSize { get; }
-        IEncoder Encoder { get; }
-
         AesGcmEncryptionResult EncryptDataAndGetMetadata(byte[] dataToEncrypt);
 
         AesGcmEncryptionResult EncryptTextAndGetMetadata(string textToEncrypt);

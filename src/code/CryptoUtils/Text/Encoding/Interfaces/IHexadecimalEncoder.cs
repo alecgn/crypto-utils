@@ -1,6 +1,6 @@
 ﻿namespace CryptoUtils.Text.Encoding
 {
-	internal interface IHexadecimalEncoder : IEncoder
+	public interface IHexadecimalEncoder : IEncoder
 	{
 	}
 }

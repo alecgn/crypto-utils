@@ -1,7 +1,7 @@
 ﻿namespace CryptoUtils.Constants
 {
-	public static class ConstantValues
+	internal static class ConstantValues
 	{
-		public const int BitsPerByte = 8;
+		internal const int BitsPerByte = 8;
 	}
 }

@@ -1,8 +1,6 @@
-﻿using CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes.Results;
-
-namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
+﻿namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 {
-    public class AesGcmDecryptionResult : AesGcmBaseResult
+	public record AesGcmDecryptionResult : AesGcmBaseResult
 	{
 		public byte[] DecryptedData { get; set; }
 

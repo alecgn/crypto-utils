@@ -1,6 +1,6 @@
 ﻿namespace CryptoUtils.Text.Encoding
 {
-	internal interface IBase64Encoder : IEncoder
+	public interface IBase64Encoder : IEncoder
 	{
 	}
 }

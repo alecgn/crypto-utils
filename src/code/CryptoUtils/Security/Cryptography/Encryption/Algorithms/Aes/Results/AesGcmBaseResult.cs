@@ -1,6 +1,6 @@
-﻿namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes.Results
+﻿namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 {
-    public abstract class AesGcmBaseResult
+    public abstract record AesGcmBaseResult
     {
         public byte[] Key { get; set; }
         public byte[] Nonce { get; set; }

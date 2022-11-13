@@ -1,34 +1,28 @@
-﻿using CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes.Interfaces;
-using CryptoUtils.Text;
+﻿using CryptoUtils.Text;
 using CryptoUtils.Text.Encoding;
 using System.Security.Cryptography;
 
 namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 {
-    public abstract class AesGcmBase : IAesGcmBase
+	public abstract class AesGcmBase : IAesGcmBase
 	{
-		#region Fields
+        #region Fields
 
-		private readonly byte[] _key;
+        private const int _encryptedDataMinimumSize = 1;
+
+        private readonly byte[] _key;
 		private readonly AesGcm _aesGcm;
 		private readonly IEncoder _encoder;
 
-		#endregion Fields
+        private int _tagSize = AesGcm.TagByteSizes.MaxSize;
+        private int _nonceSize = AesGcm.NonceByteSizes.MaxSize;
+
+        #endregion Fields
 
 
-		#region Properties
+        #region Constructors/Destructors
 
-		public int TagSize => AesGcm.TagByteSizes.MaxSize;
-		public int NonceSize => AesGcm.NonceByteSizes.MaxSize;
-		public int EncryptedDataMinimumSize => 1;
-		public IEncoder Encoder => _encoder;
-
-		#endregion Properties
-
-
-		#region Constructors/Destructors
-
-		public AesGcmBase(byte[] key, IEncoder encoder)
+        public AesGcmBase(byte[] key, IEncoder encoder)
 		{
 			_key = key;
 			_aesGcm = new(_key);
@@ -98,7 +92,7 @@ namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 			ValidateInputData(dataToEncrypt, nameof(dataToEncrypt));
 
 			var nonce = GenerateNonce();
-			var tag = new byte[TagSize];
+			var tag = new byte[_tagSize];
 			var encryptedData = new byte[dataToEncrypt.Length];
 
 			EncryptDataInternal(dataToEncrypt, tag, nonce, encryptedData);
@@ -133,7 +127,7 @@ namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 			ValidateInputData(dataToEncrypt, nameof(dataToEncrypt));
 
 			var nonce = GenerateNonce();
-			var tag = new byte[TagSize];
+			var tag = new byte[_tagSize];
 			var encryptedData = new byte[dataToEncrypt.Length];
 
 			EncryptDataInternal(dataToEncrypt, tag, nonce, encryptedData);
@@ -269,7 +263,7 @@ namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 		}
 
 		private byte[] GenerateNonce()
-			=> CryptographyUtils.GenerateRandomBytes(NonceSize);
+			=> CryptographyUtils.GenerateRandomBytes(_nonceSize);
 
 		private void EncryptDataInternal(byte[] dataToEncrypt, byte[] tag, byte[] nonce, byte[] encryptedData)
 			=> _aesGcm.Encrypt(
@@ -301,28 +295,28 @@ namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 				0,
 				encryptedDataWithMetada,
 				encryptedData.Length,
-				TagSize
+				_tagSize
 			);
 
 			Array.Copy(
 				nonce,
 				0,
 				encryptedDataWithMetada,
-				encryptedData.Length + TagSize,
-				NonceSize
+				encryptedData.Length + _tagSize,
+				_nonceSize
 			);
 
 			return encryptedDataWithMetada;
 		}
 
 		private int GetEncryptedDataWithMetadataSize(int encryptedDataSize)
-			=> encryptedDataSize + TagSize + NonceSize;
+			=> encryptedDataSize + _tagSize + _nonceSize;
 
 		private (byte[] EncryptedData, byte[] Tag, byte[] Nonce) GetMetadataFromEncryptedData(byte[] encrypteDataWithMetada)
 		{
 			ValidateEncryptedDataWithMetadataSize(encrypteDataWithMetada);
 
-			var encryptedData = new byte[encrypteDataWithMetada.Length - NonceSize - TagSize];
+			var encryptedData = new byte[encrypteDataWithMetada.Length - _nonceSize - _tagSize];
 
 			Array.Copy(
 				encrypteDataWithMetada,
@@ -332,24 +326,24 @@ namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 				encryptedData.Length
 			);
 
-			var tag = new byte[TagSize];
+			var tag = new byte[_tagSize];
 
 			Array.Copy(
 				encrypteDataWithMetada,
 				encryptedData.Length,
 				tag,
 				0,
-				TagSize
+				_tagSize
 			);
 
-			var nonce = new byte[NonceSize];
+			var nonce = new byte[_nonceSize];
 
 			Array.Copy(
 				encrypteDataWithMetada,
-				encryptedData.Length + TagSize,
+				encryptedData.Length + _tagSize,
 				nonce,
 				0,
-				NonceSize
+				_nonceSize
 			);
 
 			return (EncryptedData: encryptedData, Tag: tag, Nonce: nonce);
@@ -366,7 +360,7 @@ namespace CryptoUtils.Security.Cryptography.Encryption.Algorithms.Aes
 		private void ValidateEncryptedDataWithMetadataSize(byte[] encryptedDataWithMetada)
 		{
 			if (encryptedDataWithMetada is null ||
-				encryptedDataWithMetada.Length < NonceSize + TagSize + EncryptedDataMinimumSize
+				encryptedDataWithMetada.Length < _nonceSize + _tagSize + _encryptedDataMinimumSize
 			)
 			{
 				throw new ArgumentException("Data to decrypt is not valid (wrong size/length).", nameof(encryptedDataWithMetada));

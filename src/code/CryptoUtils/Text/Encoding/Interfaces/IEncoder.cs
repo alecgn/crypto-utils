@@ -14,10 +14,6 @@
 
 		bool IsValidEncodedString(string encodedString);
 
-		bool IsProbablyEncryptedEncodedString(string encodedString);
-
 		int ChunkSize { get; }
-
-		int EncryptedEncodedDataMinimumSize { get; }
 	}
 }

@@ -11,7 +11,7 @@ namespace CryptoUtils.Security.Cryptography
 
 	public static class KeySizesExtensions
 	{
-		public static int ToBytesSize(this KeySizes keySize)
+		internal static int ToBytesSize(this KeySizes keySize)
 			=> (int)keySize / ConstantValues.BitsPerByte;
 	}
 }

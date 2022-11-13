@@ -7,7 +7,6 @@ namespace CryptoUtils.Text.Encoding
 	public class Base64Encoder : IBase64Encoder
 	{
 		public int ChunkSize => 4;
-		public int EncryptedEncodedDataMinimumSize => 40;
 
 		private static Regex _regexBase64String = null;
 
@@ -68,10 +67,6 @@ namespace CryptoUtils.Text.Encoding
 			catch { }
 
 			return isValid;
-		}
-		public bool IsProbablyEncryptedEncodedString(string base64String)
-		{
-			return base64String.Length >= EncryptedEncodedDataMinimumSize && IsValidEncodedString(base64String);
 		}
 
 		private static void ValidateInputString(string @string, string paramName)

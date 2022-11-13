@@ -7,7 +7,6 @@ namespace CryptoUtils.Text.Encoding
 	public class HexadecimalEncoder : IHexadecimalEncoder
 	{
 		public int ChunkSize => 2;
-		public int EncryptedEncodedDataMinimumSize => 58;
 
 		private const int _hexadecimalBase = 16;
 		private const string _hexadecimalPrefix = "0x";
@@ -90,11 +89,6 @@ namespace CryptoUtils.Text.Encoding
 			catch { }
 
 			return isValid;
-		}
-
-		public bool IsProbablyEncryptedEncodedString(string hexadecimalString)
-		{
-			return hexadecimalString.Length >= EncryptedEncodedDataMinimumSize && IsValidEncodedString(hexadecimalString);
 		}
 
 		private IEnumerable<string> ChunkHexadecimalString(string hexadecimalString)
